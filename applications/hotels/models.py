@@ -11,6 +11,7 @@ class Hotels(models.Model):
     name = models.TextField(max_length=50)
     description = models.TextField(blank=True, null=True)
     free_place = models.PositiveIntegerField()
+
     rating = models.SmallIntegerField(
         validators=[
             MinValueValidator(1),

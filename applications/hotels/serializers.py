@@ -12,10 +12,18 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.email')
+    text = serializers.CharField(max_length=400)
+    hotel = serializers.ReadOnlyField(source='hotel.id')
 
     class Meta:
         model = Comment
         fields = '__all__'
+
+    # def to_representation(self, instance):
+    #     rep = super().to_representation(instance)
+    #     print(rep)
+    #     rep['text'] = 'hiiii'
+    #     return rep
 
 
 class HotelSerializer(serializers.ModelSerializer):
@@ -39,13 +47,6 @@ class HotelSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['likes'] = instance.likes.filter(like=True).count()
-        rating_result = 0
-        for rating in instance.ratings.all():
-            rating_result += int(rating.rating)
-        try:
-            representation['rating'] = rating_result / instance.ratings.all().count()
-        except ZeroDivisionError:
-            pass
         return representation
 
 
