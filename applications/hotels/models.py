@@ -36,8 +36,32 @@ class Comment(models.Model):
 
 class Like(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes', verbose_name='Владелец лайка')
-    hotel = models.ForeignKey(Hotels, on_delete=models.CASCADE, related_name='likes', verbose_name='Товар')
+    hotel = models.ForeignKey(Hotels, on_delete=models.CASCADE, related_name='likes', verbose_name='Отель')
     like = models.BooleanField('лайк', default=False)
 
     def __str__(self):
-        return f'{self.product} {self.like}'
+        return f'{self.hotel} {self.like}'
+
+
+class Favorite(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites', verbose_name='Владелец лайка')
+    hotel = models.ForeignKey(Hotels, on_delete=models.CASCADE, related_name='favorites', verbose_name='Отель')
+    like = models.BooleanField('избранное', default=False)
+
+    def __str__(self):
+        return f'{self.hotel} {self.like}'
+
+
+class Rating(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings', verbose_name='Владелец рейтинга')
+    hotel = models.ForeignKey(Hotels, on_delete=models.CASCADE, related_name='ratings', verbose_name='Отель')
+    rating = models.SmallIntegerField(
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(5)
+        ], default=1
+    )
+
+    def __str__(self):
+        return f'{self.hotel} - {self.rating}'
+

@@ -39,5 +39,15 @@ class HotelSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['likes'] = instance.likes.filter(like=True).count()
-
+        rating_result = 0
+        for rating in instance.ratings.all():
+            rating_result += int(rating.rating)
+        try:
+            representation['rating'] = rating_result / instance.ratings.all().count()
+        except ZeroDivisionError:
+            pass
         return representation
+
+
+class RatingSerializer(serializers.Serializer):
+    rating = serializers.IntegerField(required=True, min_value=1, max_value=5)
