@@ -70,10 +70,21 @@ class HotelsView(ModelViewSet):
         obj.save()
         return Response(request.data, status=201)
 
+    @action(methods=['POST'], detail=True)
+    def comment(self, request, pk, *args, **kwargs):
+        serializers = CommentSerializer(data=request.data)
+        serializers.is_valid(raise_exception=True)
+        obj, _ = Comment.objects.get_or_create(hotel_id=pk,
+                                              owner=request.user)
+        print(request.data)
+        obj.text = request.data['text']
+        obj.save()
+        return Response(request.data, status=201)
     def get_permissions(self):
+        print(self.action)
         if self.action in ['list', 'retrieve']:
             permissions = [IsAuthenticated]
-        elif self.action == 'like' or self.action == 'rating':
+        elif self.action == 'like' or self.action == 'comment':
             permissions = [IsAuthenticated]
         else:
             permissions = [CustomIsAdmin]
