@@ -60,6 +60,19 @@ class HotelsView(ModelViewSet):
         except:
             return Response('Нет такого продукта!')
 
+    # @action(methods=['POST'], detail=True)
+    # def favorite(self, request, pk, *args, **kwargs):
+    #     try:
+    #         fav_obj, _ = Favorite.objects.get_or_create(author=request.user, team_id=pk)
+    #         if not _:
+    #             fav_obj.delete()
+    #             return Response('Removed from favourites')
+    #         else:
+    #             fav_obj.save()
+    #             return Response('Added to Favourites')
+    #     except:
+    #         return Response('The team does not exits!')
+
     @action(methods=['POST'], detail=True)
     def rating(self, request, pk, *args, **kwargs):
         serializers = RatingSerializer(data=request.data)
@@ -82,7 +95,7 @@ class HotelsView(ModelViewSet):
         return Response(request.data, status=201)
     def get_permissions(self):
         print(self.action)
-        if self.action in ['list', 'retrieve']:
+        if self.action in ['retrieve']:
             permissions = [IsAuthenticated]
         elif self.action == 'like' or self.action == 'comment':
             permissions = [IsAuthenticated]

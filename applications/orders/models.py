@@ -27,6 +27,30 @@ class CartItem(models.Model):  # продукты в корзине
 
 
 
+class Order(models.Model):
+    CART_STATUS = (
+        ('in_processing', 'in_processing'),
+        ('completed', 'completed'),  # завершенный
+        ('declined', 'declined')  # отклоненный
+    )
+    # product = models.ForeignKey(Product,
+    #                             on_delete=models.CASCADE,
+    #                             related_name='orders'
+    #                             )
+    customer = models.ForeignKey(User,
+                                 on_delete=models.CASCADE,
+                                 related_name='orders')
+    # quantity = models.PositiveIntegerField()
+    status = models.CharField(max_length=20, choices=CART_STATUS,
+                              default='in_processing')
+    address = models.TextField()
+    number = models.TextField()
+    first_name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    info = models.TextField(blank=True)
+
+    def __str__(self):
+        return f'{self.first_name} ordered'
 #
 # from django.contrib.auth import get_user_model
 # from django.db import models

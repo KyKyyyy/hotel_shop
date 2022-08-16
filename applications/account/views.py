@@ -11,6 +11,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from applications.account.serializers import RegisterSerializer, LoginSerializer, ForgotPasswordCompleteSerializer, \
     ForgotPasswordSerializer
+from applications.hotels.models import Favorite
 
 User = get_user_model()
 
