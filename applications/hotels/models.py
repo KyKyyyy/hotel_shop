@@ -47,7 +47,7 @@ class Like(models.Model):
 class Favorite(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites', verbose_name='Владелец лайка')
     hotel = models.ForeignKey(Hotels, on_delete=models.CASCADE, related_name='favorites', verbose_name='Отель')
-    like = models.BooleanField('избранное', default=False)
+    like = models.BooleanField('favorite', default=False)
 
     def __str__(self):
         return f'{self.hotel} {self.like}'

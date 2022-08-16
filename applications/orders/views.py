@@ -5,8 +5,8 @@ from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
-from applications.orders.models import  CartItem
-from applications.orders.serializers import  CartItemSerializer
+from applications.orders.models import CartItem, Order
+from applications.orders.serializers import CartItemSerializer, OrderSerializer
 
 
 class CartItemView(ModelViewSet):
@@ -19,3 +19,12 @@ class CartItemView(ModelViewSet):
         user = self.request.user
         queryset = queryset.filter(cart=user.carts.first())
         return queryset
+
+
+class OrderView(ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(customer=self.request.user)

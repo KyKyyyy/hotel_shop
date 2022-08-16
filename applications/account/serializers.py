@@ -3,6 +3,7 @@ from rest_framework import serializers
 from applications.account.tasks import celery_send_confirmation_email, celery_send_confirmation_password
 
 # from applications.account.send_mail import send_confirmation_email, forgot_password_email
+from applications.hotels.models import Favorite
 
 User = get_user_model()
 
@@ -99,3 +100,6 @@ class ForgotPasswordCompleteSerializer(serializers.Serializer):
         user.set_password(password)
         user.activation_code = ''
         user.save()
+
+
+

@@ -47,6 +47,7 @@ class HotelSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['likes'] = instance.likes.filter(like=True).count()
+
         return representation
 
 
